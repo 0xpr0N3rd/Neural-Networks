@@ -1,0 +1,18 @@
+function wM = CreateWeightMatrix(layers) %wM return type (!)
+
+weightMatrix = {};
+
+disp(layers);
+disp(size(layers));
+disp(length(layers));
+
+for i = 1:1:size(layers, 2) - 1   %create 4x6 matrix, "-1" is preventing creation of 3rd matrix
+	weightMatrix{i} = rand(layers(i), layers(i+1));
+end
+
+disp(weightMatrix{1});
+disp(weightMatrix{1}(:));
+
+wM = weightMatrix; %we need to declare the variable that we want to return (!)
+end
+
