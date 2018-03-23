@@ -1,0 +1,11 @@
+function values = FeedForwardData(neuralNtw, data)
+
+values = cell(1, length(neurlNtw) + 1);
+
+disp(values);
+
+values{1} = data(:)';
+
+for i = 1:length(neuralNtw)
+	values{i+1} = 1./(1 + exp(-(values{i}(:)));
+end
