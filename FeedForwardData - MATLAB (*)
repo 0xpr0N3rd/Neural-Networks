@@ -1,6 +1,6 @@
 function values = FeedForwardData(neuralNtw, data)
 
-values = cell(1, length(neurlNtw) + 1);
+values = cell(1, length(neuralNtw) + 1);
 
 disp(values);
 
