@@ -1,0 +1,49 @@
+function neuralNet = trainNeuralNet(neuralNet, iterations,learningRate, input, target)
+
+  totalError = Inf;
+  disp('Training...');
+  
+  for iter = 1:iterations
+    sets = size(input, 1);
+    totalError = totalError / sets;
+    
+    if (mod(iter, 1000) == 0)
+      display([int2str(iter), ': ', num2str(totalError)])
+    end
+    
+    % Reset total error.
+    totalError = 0;
+
+    % Train network using each input/targetoutput pair.
+    
+    for set = 1:sets
+      targetOutput = target(set, :);
+      [values] = FeedForwardData(neuralNet, input(set, :));
+      totalError = totalError + sum(abs((targetOutput - values{end})))/set;
+
+      % Initial error on output layer.
+      error = (values{end} - targetOutput)';
+
+      % Backpropagate through network -- iterate over the weight layer
+      % from right to left.
+     
+     for i = length(neuralNet):-1:1
+        out = values{i+1}(:); % Current weight layers original output.
+        in = values{i}; % Current weight layers original input.
+
+        delta = (out .* (1 - out)) .* error(:); 
+        error = neuralNet{i} * delta; % Next error for backpropagation.
+        
+        disp('#############'); % debug
+        disp(neuralNet{i});
+        disp('***');
+        disp(delta);
+        disp('#############'); % debug
+       
+       neuralNet{i} = neuralNet{i} - (learningRate * delta * in)';
+      end
+    end
+  end  
+  display(['Stopped training at ', int2str(iter), ...
+    ' iterations with a total error of ', num2str(totalError/sets)])
+end
